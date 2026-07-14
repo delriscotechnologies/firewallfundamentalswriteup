@@ -65,8 +65,6 @@
     .reading-note b { color:var(--paper); }
     main { padding-bottom:64px; }
     .section { padding:46px 0; position:relative; border-top:1px solid transparent; border-image:linear-gradient(90deg,rgba(126,166,230,.24),rgba(126,166,230,.07) 62%,transparent) 1; scroll-margin-top:24px; }
-    .section-num { display:flex; align-items:center; gap:10px; color:#8c9aaf; font:500 .67rem "DM Mono",monospace; letter-spacing:.11em; }
-    .section-num + p { margin-top:18px; }
     h2 { margin:11px 0 19px; font:normal clamp(2.1rem,6vw,3.5rem)/.96 "Instrument Serif",Georgia,serif; letter-spacing:-.045em; color:#e8e4d8; }
     h3 { margin:28px 0 8px; font-size:1rem; letter-spacing:-.025em; color:#dfe4ea; }
     p { margin:0 0 16px; color:var(--body); font-size:1rem; line-height:1.8; }
@@ -112,17 +110,14 @@
     </header>
     <main>
       <section class="section" id="basic-idea">
-        <div class="section-num" style="--heat:var(--ice)">CORE / DECISION</div>
         <p>The simplest definition is that a firewall is a <strong>hardware or software security control</strong> that monitors network traffic and applies security policies to it. Those policies determine whether traffic is allowed, actively rejected, or silently dropped.</p>
       </section>
       <section class="section" id="direction">
-        <div class="section-num" style="--heat:var(--mist)">DIRECTION / INGRESS</div>
         <h2>Ingress enters the network. Egress leaves it.</h2>
         <p>The direction is named from the perspective of the network boundary the firewall is protecting. <strong>Ingress traffic</strong> crosses that boundary into the network. <strong>Egress traffic</strong> crosses the boundary on its way out.</p>
         <p>For example, when an internal workstation requests a web page, the request is egress traffic because it leaves the internal network for the internet. The web server’s response becomes ingress traffic when it returns through the firewall. A stateful firewall can associate that response with the connection initiated by the workstation and evaluate it as return traffic for an established session.</p>
       </section>
       <section class="section" id="rules">
-        <div class="section-num" style="--heat:var(--glow)">POLICY / RULE ORDER</div>
         <h2>ACLs were my first introduction to traffic policy.</h2>
         <p>My first practical exposure to firewall logic came in school, when I started configuring <strong>access control lists on Cisco routers or Layer 3 switches</strong>. A traditional interface ACL generally provides stateless packet filtering rather than full stateful inspection, but it follows the same core policy model: inspect packet fields, find a matching policy entry, and apply a permit or deny action.</p>
         <p>An extended ACL can match a <strong>source address</strong>, <strong>destination address</strong>, <strong>protocol</strong>, and <strong>transport port</strong>. Cisco ACL entries are evaluated from top to bottom. The first matching entry determines the action, and traffic that matches no preceding entry reaches the implicit deny at the end. The ACL must also be applied to the correct interface and direction before it can filter traffic.</p>
@@ -133,7 +128,6 @@
         <aside class="idea"><span class="idea-label">Policy principle</span><p>A default-deny policy reduces unintended exposure by limiting access to documented flows. It still depends on correct rule order, explicit requirements, logging, and periodic policy review.</p></aside>
       </section>
       <section class="section" id="inspection">
-        <div class="section-num" style="--heat:var(--signal)">DEPTH / INSPECTION</div>
         <h2>Different firewalls inspect traffic at different depths.</h2>
         <div class="comparison">
           <div><b>Packet filtering</b><p>Checks basic attributes such as IP address, protocol, and port. It typically introduces less inspection overhead, but provides less context than stateful or application-layer inspection.</p></div>
@@ -143,7 +137,6 @@
         </div>
       </section>
       <section class="section" id="actions">
-        <div class="section-num" style="--heat:var(--mid)">ACTION / RESPONSE</div>
         <h2>Firewall actions: allow, reject, or drop.</h2>
         <div class="comparison">
           <div><b class="status allow">ALLOW</b><p>The firewall permits the connection.</p></div>
@@ -153,7 +146,6 @@
         <p class="after"><strong>REJECT</strong> indicates that a host or network device actively denied the traffic and returned a response; it does not necessarily identify which device generated that response. <strong>DROP</strong> returns nothing, so a scanner may be unable to determine whether filtering, packet loss, or an unresponsive host caused the missing response. Depending on the scan type, the result may appear as <strong>filtered</strong> or <strong>open|filtered</strong>. Silent dropping can slow reconnaissance by forcing retransmissions, but it should not be treated as a complete security control by itself.</p>
       </section>
       <section class="section" id="placement">
-        <div class="section-num" style="--heat:var(--signal)">PLACEMENT / SEGMENTATION</div>
         <h2>Firewalls are useful in more than one place.</h2>
         <ul class="list">
           <li><strong>At the perimeter:</strong> between the internet and the internal network.</li>
@@ -163,7 +155,6 @@
         <p>My biggest lesson here is that a perimeter firewall is not enough on its own. If an attacker is already inside, internal segmentation and host-based controls can still reduce what they can reach.</p>
       </section>
       <section class="closing">
-        <div class="section-num" style="--heat:var(--mist)">FINAL / THOUGHTS</div>
         <h2>Final thoughts.</h2>
         <p>A firewall is one layer in a defense-in-depth architecture. It can reduce unauthorized access by enforcing policies at network boundaries, limiting permitted communication paths, and generating logs that support monitoring and investigation. Those controls are important, but they do not make the firewall a complete security system. Phishing, social engineering, insider misuse, zero-day exploitation, and malicious content carried through an allowed or encrypted session can fall outside what a firewall policy is designed to stop.</p>
         <p>The firewall can also introduce risk when its policy is poorly designed or left unmanaged. Broad source or destination ranges, unnecessary services, temporary exceptions that become permanent, incorrect rule order, and rules that no longer have an owner can quietly expand the attack surface. Logging without review may preserve evidence, but it does not produce detection or response by itself.</p>
