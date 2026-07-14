@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <meta name="referrer" content="no-referrer">
-  <meta name="description" content="A personal study write up on firewall fundamentals.">
+  <meta name="description" content="A personal study write-up on firewall fundamentals.">
   <meta name="author" content="Cristian Del Risco">
-  <link rel="icon" href="data:,">
-  <title>Firewall Fundamentals / Study Write Up</title>
+  <title>Firewall Fundamentals / Study Write-Up</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap');
     :root {
@@ -17,7 +16,6 @@
       --glow:#8eb4ff;
       --signal:#5f91ed;
       --mid:#3968c5;
-      --deep:#17366f;
       --bg:#040914;
       --paper:#e9e4d5;
       --body:#b8c2cf;
@@ -59,14 +57,12 @@
     .reading-progress span { display:block; width:100%; height:100%; transform:scaleY(0); transform-origin:top; background:linear-gradient(to bottom,var(--ice),var(--glow) 35%,var(--signal) 70%,#254c9b); box-shadow:0 0 16px rgba(95,145,237,.48); }
     .page { width:min(calc(100% - 40px),var(--content)); margin:auto; position:relative; }
     header { padding:94px 0 74px; position:relative; isolation:isolate; }
-
     h1 { max-width:660px; margin:17px 0 20px; font:normal clamp(3.6rem,10vw,7.2rem)/.84 "Instrument Serif",Georgia,serif; letter-spacing:-.06em; }
     h1 em { background-image:var(--grain),linear-gradient(100deg,var(--ice) 0%,var(--glow) 43%,var(--signal) 74%,#416fc7 100%); background-size:150px 150px,100% 100%; background-blend-mode:soft-light,normal; background-clip:text; color:transparent; filter:drop-shadow(0 0 22px rgba(67,111,199,.08)); }
     .lede { max-width:610px; margin:0; color:#bdc7d3; font-size:1.06rem; line-height:1.8; }
     .reading-note { margin-top:42px; padding:17px 19px; border-left:1px solid var(--glow); color:#aeb9c8; font-size:.86rem; line-height:1.65; background:linear-gradient(90deg,rgba(48,93,181,.09),transparent 74%); box-shadow:inset 10px 0 30px rgba(38,78,157,.035); }
     .reading-note b { color:var(--paper); }
-
-    main { padding-bottom:88px; }
+    main { padding-bottom:64px; }
     .section { padding:46px 0; position:relative; border-top:1px solid transparent; border-image:linear-gradient(90deg,rgba(126,166,230,.24),rgba(126,166,230,.07) 62%,transparent) 1; scroll-margin-top:24px; }
     .section-num { display:flex; align-items:center; gap:10px; color:#8c9aaf; font:500 .67rem "DM Mono",monospace; letter-spacing:.11em; }
     .section-num:before { content:""; width:5px; height:5px; flex:0 0 5px; border-radius:50%; background:var(--heat); box-shadow:0 0 0 4px rgba(95,145,237,.035),0 0 15px color-mix(in srgb,var(--heat) 48%,transparent); }
@@ -79,10 +75,6 @@
     .idea:before { content:""; position:absolute; left:-1px; top:-1px; bottom:-1px; width:1px; background:linear-gradient(to bottom,var(--ice),var(--signal),rgba(23,54,111,.4)); box-shadow:0 0 18px rgba(95,145,237,.25); }
     .idea-label { display:block; margin-bottom:9px; color:#93a2b8; font:500 .64rem "DM Mono",monospace; letter-spacing:.11em; text-transform:uppercase; }
     .idea p { margin:0; color:#c8d1dc; font-size:.94rem; }
-    .flow { display:flex; align-items:center; gap:8px; margin:26px 0 5px; color:var(--paper); font:500 .71rem "DM Mono",monospace; overflow-x:auto; padding-bottom:4px; }
-    .flow span { flex:0 0 auto; padding:11px 13px; border:1px solid var(--line); }
-    .flow i { color:var(--signal); font-style:normal; }
-    .flow .decision { border-color:rgba(95,145,237,.48); color:var(--glow); }
     .rule { margin:25px 0 3px; padding:18px 20px; border:1px solid rgba(105,143,206,.18); background:linear-gradient(110deg,#030813,rgba(13,28,55,.42)); box-shadow:inset 0 1px rgba(211,226,255,.02); font:.78rem/1.8 "DM Mono",monospace; color:#c4cfde; overflow:auto; }
     .rule .comment { color:var(--muted); }
     .rule .allow,.status.allow { color:#9ed795; }
@@ -96,18 +88,16 @@
     .list { margin:21px 0 5px; padding:0; list-style:none; }
     .list li { position:relative; padding:0 0 15px 23px; color:var(--body); font-size:.96rem; line-height:1.65; }
     .list li:before { content:""; position:absolute; left:2px; top:.68em; width:5px; height:5px; background:var(--signal); box-shadow:0 0 0 4px rgba(95,145,237,.035),0 0 10px rgba(95,145,237,.45); }
-    .closing { padding:31px 0 0; position:relative; }
-    .closing:after { content:""; position:absolute; left:0; bottom:-45px; width:120px; height:1px; background:linear-gradient(90deg,var(--glow),transparent); opacity:.45; }
+    .closing { padding:31px 0 0; }
     .closing h2 { max-width:610px; }
     .closing p { max-width:640px; }
+    footer { padding:0 0 38px; color:var(--muted); font:500 .68rem "DM Mono",monospace; letter-spacing:.08em; }
     @media(max-width:560px) {
       .page { width:min(calc(100% - 28px),var(--content)); }
       .reading-progress { width:2px; }
       header { padding:66px 0 55px; }
       .section { padding:38px 0; }
       .comparison div { grid-template-columns:1fr; gap:5px; }
-      .flow { margin-left:-3px; margin-right:-3px; }
-
     }
     @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
   </style>
@@ -117,48 +107,70 @@
   <div class="page">
     <header>
       <h1>Firewall <em>fundamentals.</em></h1>
-      <p class="lede">This study write up explains how firewalls enforce network security policies: how they evaluate ingress and egress traffic, match source, destination, protocol, and port against ordered policy entries, track connection state, and apply allow, reject, or drop actions.</p>
+      <p class="lede">This study write-up explains how firewalls enforce network security policies: how they evaluate ingress and egress traffic, match source, destination, protocol, and port against ordered policy entries, track connection state, and apply allow, reject, or drop actions.</p>
       <div class="reading-note"><b>My goal:</b> I am writing this as a study exercise to organize the concepts, test my understanding, and keep a reference I can review later.</div>
     </header>
-
     <main>
-      <div class="section" id="basic-idea">
+      <section class="section" id="basic-idea">
         <div class="section-num" style="--heat:var(--ice)">CORE / DECISION</div>
-<p>The simplest definition is that a firewall is a <strong>hardware or software security control</strong> that monitors network traffic and applies security policies to it. Those policies determine whether traffic is allowed, rejected, or dropped.</p>      </div>
-
+        <p>The simplest definition is that a firewall is a <strong>hardware or software security control</strong> that monitors network traffic and applies security policies to it. Those policies determine whether traffic is allowed, actively rejected, or silently dropped.</p>
+      </section>
       <section class="section" id="direction">
         <div class="section-num" style="--heat:var(--mist)">DIRECTION / INGRESS</div>
         <h2>Ingress enters the network. Egress leaves it.</h2>
-<p>The direction is named from the perspective of the network boundary the firewall is protecting. <strong>Ingress traffic</strong> crosses that boundary into the network. <strong>Egress traffic</strong> crosses the boundary on its way out.</p><p>For example, when an internal workstation requests a web page, the request is egress traffic because it leaves the internal network for the internet. The web server’s response becomes ingress traffic when it returns through the firewall. A stateful firewall can associate that response with the connection initiated by the workstation and evaluate it as return traffic for an established session.</p>      </section>
-
+        <p>The direction is named from the perspective of the network boundary the firewall is protecting. <strong>Ingress traffic</strong> crosses that boundary into the network. <strong>Egress traffic</strong> crosses the boundary on its way out.</p>
+        <p>For example, when an internal workstation requests a web page, the request is egress traffic because it leaves the internal network for the internet. The web server’s response becomes ingress traffic when it returns through the firewall. A stateful firewall can associate that response with the connection initiated by the workstation and evaluate it as return traffic for an established session.</p>
+      </section>
       <section class="section" id="rules">
         <div class="section-num" style="--heat:var(--glow)">POLICY / RULE ORDER</div>
         <h2>ACLs were my first introduction to traffic policy.</h2>
-<p>My first practical exposure to firewall logic came in school, when I started configuring <strong>access control lists on Cisco routers or Layer 3 switches</strong>. An ACL provides stateless packet filtering rather than full stateful inspection, but it follows the same core policy model: inspect packet fields, find a matching policy entry, and apply a permit or deny action.</p><p>An extended ACL can match a <strong>source address</strong>, <strong>destination address</strong>, <strong>protocol</strong>, and <strong>transport port</strong>. Cisco ACL entries are evaluated from top to bottom. The first matching entry determines the action, and traffic that matches no preceding entry reaches the implicit deny at the end. The ACL must also be applied to the correct interface and direction before it can filter traffic.</p><div class="rule"><span class="comment"># Cisco extended ACL: permit HTTPS to one server</span><br>ip access-list extended WEB_TRAFFIC<br><span class="allow">permit</span> tcp any host 10.0.10.20 eq 443</div><p>This entry permits TCP traffic from any source to the server at <strong>10.0.10.20</strong> on destination port <strong>443</strong>. The source, destination, protocol, port, direction, and rule order define the exact flow the policy authorizes.</p><h3>Implicit deny and default deny</h3><p>At the end of a Cisco ACL, an <strong>implicit deny</strong> blocks traffic that did not match any preceding entry. Firewalls apply the same default deny principle more broadly: traffic is denied unless a policy entry explicitly authorizes the required communication.</p><aside class="idea"><span class="idea-label">Policy principle</span><p>A default deny policy reduces unintended exposure by limiting access to documented flows. It still depends on correct rule order, explicit requirements, logging, and periodic policy review.</p></aside>      </section>
-
+        <p>My first practical exposure to firewall logic came in school, when I started configuring <strong>access control lists on Cisco routers or Layer 3 switches</strong>. A traditional interface ACL generally provides stateless packet filtering rather than full stateful inspection, but it follows the same core policy model: inspect packet fields, find a matching policy entry, and apply a permit or deny action.</p>
+        <p>An extended ACL can match a <strong>source address</strong>, <strong>destination address</strong>, <strong>protocol</strong>, and <strong>transport port</strong>. Cisco ACL entries are evaluated from top to bottom. The first matching entry determines the action, and traffic that matches no preceding entry reaches the implicit deny at the end. The ACL must also be applied to the correct interface and direction before it can filter traffic.</p>
+        <div class="rule"><span class="comment"># Cisco extended ACL: permit HTTPS to one server</span><br>ip access-list extended WEB_TRAFFIC<br><span class="allow">permit</span> tcp any host 10.0.10.20 eq 443<br><br><span class="comment"># Apply the ACL to an interface and direction</span><br>interface GigabitEthernet0/1<br>ip access-group WEB_TRAFFIC in</div>
+        <p>This example permits TCP traffic from any source to the server at <strong>10.0.10.20</strong> on destination port <strong>443</strong>, then applies the ACL inbound on an example interface. The correct interface and direction depend on the network topology.</p>
+        <h3>Implicit deny and default deny</h3>
+        <p>At the end of a Cisco ACL, an <strong>implicit deny</strong> blocks traffic that did not match any preceding entry. Well-designed firewall policies commonly follow a <strong>default-deny</strong> model, in which traffic is denied unless an explicit rule authorizes the required communication.</p>
+        <aside class="idea"><span class="idea-label">Policy principle</span><p>A default-deny policy reduces unintended exposure by limiting access to documented flows. It still depends on correct rule order, explicit requirements, logging, and periodic policy review.</p></aside>
+      </section>
       <section class="section" id="inspection">
         <div class="section-num" style="--heat:var(--signal)">DEPTH / INSPECTION</div>
         <h2>Different firewalls inspect traffic at different depths.</h2>
-<div class="comparison"><div><b class="">Packet filtering</b><p>Checks basic attributes such as IP address, protocol, and port. It is fast, but has limited context.</p></div><div><b class="">Stateful inspection</b><p>Tracks active connections, so it can recognize traffic that belongs to a valid session instead of treating every packet as unrelated.</p></div><div><b class="">Proxy / application</b><p>Acts as an intermediary and can inspect application layer traffic more deeply. That visibility can introduce more overhead.</p></div><div><b class="">NGFW</b><p>Commonly combines traditional firewall controls with capabilities such as application control, IPS, identity awareness, and threat intelligence.</p></div></div>      </section>
-
+        <div class="comparison">
+          <div><b>Packet filtering</b><p>Checks basic attributes such as IP address, protocol, and port. It typically introduces less inspection overhead, but provides less context than stateful or application-layer inspection.</p></div>
+          <div><b>Stateful inspection</b><p>Tracks active connections, so it can recognize traffic that belongs to a valid session instead of treating every packet as unrelated.</p></div>
+          <div><b>Proxy / application</b><p>Acts as an intermediary and can inspect application-layer traffic more deeply. That visibility can introduce more overhead.</p></div>
+          <div><b>Next-generation firewall (NGFW)</b><p>Commonly combines traditional firewall controls with capabilities such as application control, an intrusion prevention system (IPS), identity awareness, and threat intelligence.</p></div>
+        </div>
+      </section>
       <section class="section" id="actions">
         <div class="section-num" style="--heat:var(--mid)">ACTION / RESPONSE</div>
         <h2>Firewall actions: allow, reject, or drop.</h2>
-<div class="comparison"><div><b class="status allow">ALLOW</b><p>The firewall permits the connection.</p></div><div><b class="status reject">REJECT</b><p>The firewall denies the traffic and returns a response, such as a TCP reset or ICMP error.</p></div><div><b class="status drop">DROP</b><p>The firewall silently discards the packet. The sender receives no response and normally sees a timeout.</p></div></div><p class="after"><strong>REJECT</strong> confirms that the packet reached an enforcement point because the firewall returns a response. <strong>DROP</strong> returns nothing, so a scanner cannot immediately tell whether the port is closed, the host is unavailable, or a firewall is filtering the traffic. That uncertainty can slow reconnaissance and require additional probes, creating more observable scanning activity. DROP should not be treated as a security control by itself.</p>      </section>
-
+        <div class="comparison">
+          <div><b class="status allow">ALLOW</b><p>The firewall permits the connection.</p></div>
+          <div><b class="status reject">REJECT</b><p>The firewall denies the traffic and actively returns a response, such as a TCP reset or ICMP error.</p></div>
+          <div><b class="status drop">DROP</b><p>The firewall silently discards the packet. The sender receives no response and will generally wait for a timeout or retransmit.</p></div>
+        </div>
+        <p class="after"><strong>REJECT</strong> indicates that a host or network device actively denied the traffic and returned a response; it does not necessarily identify which device generated that response. <strong>DROP</strong> returns nothing, so a scanner may be unable to determine whether filtering, packet loss, or an unresponsive host caused the missing response. Depending on the scan type, the result may appear as <strong>filtered</strong> or <strong>open|filtered</strong>. Silent dropping can slow reconnaissance by forcing retransmissions, but it should not be treated as a complete security control by itself.</p>
+      </section>
       <section class="section" id="placement">
         <div class="section-num" style="--heat:var(--signal)">PLACEMENT / SEGMENTATION</div>
         <h2>Firewalls are useful in more than one place.</h2>
-<ul class="list"><li><strong>At the perimeter:</strong> between the internet and the internal network.</li><li><strong>Between internal zones:</strong> to separate users, servers, finance, development, or other sensitive areas and limit lateral movement.</li><li><strong>On the host:</strong> as a local software firewall that controls traffic directly on a workstation or server.</li></ul><p>My biggest lesson here is that a perimeter firewall is not enough on its own. If an attacker is already inside, internal segmentation and host based controls can still reduce what they can reach.</p>      </section>
-
+        <ul class="list">
+          <li><strong>At the perimeter:</strong> between the internet and the internal network.</li>
+          <li><strong>Between internal zones:</strong> to separate users, servers, finance, development, or other sensitive areas and limit lateral movement.</li>
+          <li><strong>On the host:</strong> as a local software firewall that controls traffic directly on a workstation or server.</li>
+        </ul>
+        <p>My biggest lesson here is that a perimeter firewall is not enough on its own. If an attacker is already inside, internal segmentation and host-based controls can still reduce what they can reach.</p>
+      </section>
       <section class="closing">
         <div class="section-num" style="--heat:var(--mist)">FINAL / THOUGHTS</div>
         <h2>Final thoughts.</h2>
-        <p>A firewall is one layer in a defense in depth architecture. It can reduce unauthorized access by enforcing policies at network boundaries, limiting permitted communication paths, and generating logs that support monitoring and investigation. Those controls are important, but they do not make the firewall a complete security system. Phishing, social engineering, insider misuse, zero day exploitation, and malicious content carried through an allowed or encrypted session can fall outside what a firewall policy is designed to stop.</p>
+        <p>A firewall is one layer in a defense-in-depth architecture. It can reduce unauthorized access by enforcing policies at network boundaries, limiting permitted communication paths, and generating logs that support monitoring and investigation. Those controls are important, but they do not make the firewall a complete security system. Phishing, social engineering, insider misuse, zero-day exploitation, and malicious content carried through an allowed or encrypted session can fall outside what a firewall policy is designed to stop.</p>
         <p>The firewall can also introduce risk when its policy is poorly designed or left unmanaged. Broad source or destination ranges, unnecessary services, temporary exceptions that become permanent, incorrect rule order, and rules that no longer have an owner can quietly expand the attack surface. Logging without review may preserve evidence, but it does not produce detection or response by itself.</p>
         <p>This is why the value is not simply the appliance or software. The value comes from the policy behind it: knowing which systems must communicate, in which direction, over which protocol and port, and under what conditions. A useful firewall policy is specific, documented, monitored, and reviewed as the environment changes. The firewall enforces that intent, but it cannot define or maintain the intent on its own.</p>
       </section>
     </main>
+    <footer>© 2026 Del Risco Technologies</footer>
   </div>
   <script>
     (() => {
