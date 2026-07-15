@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://avatars.githubusercontent.com; script-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://avatars.githubusercontent.com; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <meta name="referrer" content="no-referrer">
   <meta name="description" content="A personal study write-up on firewall fundamentals.">
   <meta name="author" content="Cristian Del Risco">
@@ -163,28 +163,6 @@
     </main>
     <footer>© 2026 Del Risco Technologies</footer>
   </div>
-  <script>
-    (() => {
-      const progress = document.querySelector('[data-reading-progress]');
-      const fill = progress?.querySelector('span');
-      if (!progress || !fill) return;
-      let frameRequested = false;
-      const update = () => {
-        const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
-        const ratio = scrollRange > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollRange)) : 1;
-        fill.style.transform = `scaleY(${ratio})`;
-        progress.setAttribute('aria-valuenow', String(Math.round(ratio * 100)));
-        frameRequested = false;
-      };
-      const requestUpdate = () => {
-        if (frameRequested) return;
-        window.requestAnimationFrame(update);
-        frameRequested = true;
-      };
-      window.addEventListener('scroll', requestUpdate, { passive:true });
-      window.addEventListener('resize', requestUpdate);
-      update();
-    })();
-  </script>
+  <script src="reading-progress.js" defer></script>
 </body>
 </html>
