@@ -105,7 +105,7 @@
   <div class="page">
     <header>
       <h1>Firewall <em>fundamentals.</em></h1>
-      <p class="lede">This study write-up explains how firewalls enforce network security policies: how they evaluate ingress and egress traffic, match source, destination, protocol, and port against ordered policy entries, track connection state, and apply allow, reject, or drop actions.</p>
+      <p class="lede">This study write-up explains how firewalls enforce network security policies: how they evaluate ingress and egress traffic, match source, destination, protocol, and port against ordered policy entries, track connection state, and apply actions such as allow, reject, or drop.</p>
       <div class="reading-note"><b>My goal:</b> I am writing this as a study exercise to organize the concepts, test my understanding, and keep a reference I can review later.</div>
     </header>
     <main>
@@ -137,10 +137,10 @@
         </div>
       </section>
       <section class="section" id="actions">
-        <h2>Firewall actions: allow, reject, or drop.</h2>
+        <h2>Common firewall actions include allow, reject, and drop.</h2>
         <div class="comparison">
-          <div><b class="status allow">ALLOW</b><p>The firewall permits the connection.</p></div>
-          <div><b class="status reject">REJECT</b><p>The firewall denies the traffic and actively returns a response, such as a TCP reset or ICMP error.</p></div>
+          <div><b class="status allow">ALLOW</b><p>The firewall permits matching traffic.</p></div>
+          <div><b class="status reject">REJECT</b><p>The firewall denies the traffic and may actively return a response, such as a TCP reset or ICMP error, depending on the protocol and implementation.</p></div>
           <div><b class="status drop">DROP</b><p>The firewall silently discards the packet. The sender receives no response and will generally wait for a timeout or retransmit.</p></div>
         </div>
         <p class="after"><strong>REJECT</strong> indicates that a host or network device actively denied the traffic and returned a response; it does not necessarily identify which device generated that response. <strong>DROP</strong> returns nothing, so a scanner may be unable to determine whether filtering, packet loss, or an unresponsive host caused the missing response. Depending on the scan type, the result may appear as <strong>filtered</strong> or <strong>open|filtered</strong>. Silent dropping can slow reconnaissance by forcing retransmissions, but it should not be treated as a complete security control by itself.</p>
