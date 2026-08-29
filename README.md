@@ -1,7 +1,7 @@
 <h1 align="center">FIREWALL FUNDAMENTALS</h1>
 
 <p align="center">
-  A simple study guide to how firewalls inspect traffic and enforce network security policies.
+  A simple study guide explaining how firewalls inspect traffic and enforce network security policies.
 </p>
 
 <p align="center">
