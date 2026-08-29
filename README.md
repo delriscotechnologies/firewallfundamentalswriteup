@@ -10,10 +10,10 @@
 
 ---
 
-This write-up explains the core ideas behind firewall operation: ingress and egress traffic, ordered access-control rules, implicit and default deny, stateful inspection, and the differences between allow, reject, and drop actions.
+Firewall Fundamentals explains ingress and egress traffic, ordered access-control rules, default deny, stateful inspection, firewall types, and common allow, reject, and drop actions.
 
-It also introduces common firewall types and shows why perimeter controls, internal segmentation, host firewalls, logging, and regular policy review all matter in a defense-in-depth strategy.
+The write-up also covers perimeter, internal, and host-based firewalls as part of a defense-in-depth strategy.
 
-## Reference
+## References
 
 - [NIST SP 800-41 Rev. 1: Guidelines on Firewalls and Firewall Policy](https://csrc.nist.gov/pubs/sp/800/41/r1/final)
